@@ -80,9 +80,13 @@ foreach ($cars as $car) {
 }
 echo '<br>';
 // Задание №5
+
+echo '<table style="width:100%">';
 for ($i = 1; $i <= 10; $i++) {
+    echo'<tr>';
     for ($j = 1; $j <= 10; $j++) {
         $result=$i*$j;
+        echo '<td>';
         if (($i % 2==0) and ($j % 2==0)) {
             echo "($result) ";
         } elseif (($i % 2<>0) and ($j % 2<>0)) {
@@ -90,8 +94,9 @@ for ($i = 1; $i <= 10; $i++) {
         } else {
             echo $result.' ';
         }
+        echo '<td>';
     }
-    echo "<br>";
+    echo "</tr>";
 }
 
 
