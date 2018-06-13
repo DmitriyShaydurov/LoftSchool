@@ -4,7 +4,7 @@
 $name='Дмитрий';
 $age='46';
 echo "Меня зовут: $name<br> Мне $age лет <br>";
-echo "\"!|\/ ’”\\<br>";
+echo "\"!|\/ '\"\\<br>";
 
 // Задание №2
 echo "<br>Дана задача: На школьной выставке 80 рисунков. 23 из них выполнены
@@ -29,8 +29,7 @@ if ($age>=18 and $age<=65) {
 }
 echo '<br>';
 // Задание №4
-$workingDays='Это рабочий день';
-$weekEnd='Это выходной день';
+
 $day=6;
 
 switch ($day) {
@@ -39,11 +38,11 @@ switch ($day) {
     case 3:
     case 4:
     case 5:
-        echo $workingDays;
+        echo 'Это рабочий день';
         break;
     case 6:
     case 7:
-        echo $weekEnd;
+        echo 'Это выходной день';
         break;
 
     default:
