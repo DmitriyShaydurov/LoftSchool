@@ -1,5 +1,6 @@
 <?php
-abstract class AbstractTariff implements necessaryFunctions
+
+abstract class AbstractTariff implements NecessaryFunctions
 {
     use Gps;
     protected $age;
@@ -10,7 +11,7 @@ abstract class AbstractTariff implements necessaryFunctions
     protected $doNotApplicable = false;
     protected $gps;
     protected $driver;
-    public $total = 0;
+    protected $total = 0;
 
 
     public function __construct($age, $minutes, $mileage, $gps = false, $driver = false)
@@ -21,17 +22,6 @@ abstract class AbstractTariff implements necessaryFunctions
         $this->driver = $driver;
         $this->gps = $gps;
 
-
-        $this->ageCalc();
-        $this->priceCalc();
-        $this->gAddition();
-    }
-
-    public function __destruct()
-    {
-        if ($this->doNotApplicable) {
-            echo '<br> выберите другой тариф';
-        }
     }
 
     abstract public function priceCalc();
@@ -42,11 +32,9 @@ abstract class AbstractTariff implements necessaryFunctions
         if ($this->age > 65) {
             echo 'мы не работаем с клиентами старше 65';
             $this->doNotApplicable = true;
-            exit();
         } elseif ($this->age < 18) {
             echo 'мы не работаем с клиентами младше 18';
             $this->doNotApplicable = true;
-            exit();
         } elseif ($this->age <= 21) {
             $this->multiplier = 1.1;
         }
@@ -56,6 +44,18 @@ abstract class AbstractTariff implements necessaryFunctions
     {
         if (!$this->doNotApplicable && $this->gps) {
             $this->total = $this->total + $this->gpsAddition($this->minutes);
+        }
+    }
+
+    public function totalCalc()
+    {
+        $this->ageCalc();
+        $this->priceCalc();
+        $this->gAddition();
+        if ($this->doNotApplicable) {
+            return 'Выберите другой тариф';
+        } else {
+            return $this->total;
         }
     }
 }

@@ -2,14 +2,24 @@
 echo "<br> Задание 1 <br>";
 $xml = simplexml_load_file('data.xml');
 
-//foreach ($xml->Address as $key => $value) {
-//   echo $key . ' ' . $value . '<br />';
-//}
-echo '<pre>';
-print_r($xml);
-echo '______________<br>';
-print_r($xml->Address);
+foreach ($xml->Address as $adr) {
+    echo '<br> Адрес тип ' . $adr ['Type'] . '<br>';
+    echo $adr->Name->__toString() . '<br>';
+    echo $adr->Street->__toString() . '<br>';
+    echo $adr->City->__toString() . '<br>';
+    echo $adr->Zip->__toString() . '<br>';
+}
 
+echo '<br>Замечания:<br>'. $xml->DeliveryNotes. '<br>';
+echo '<br>Cостав заказа<br>';
+foreach ($xml->Items->Item as $itm) {
+    echo '<br> Артикул '.$itm['PartNumber']->__toString() . '<br>';
+    echo 'Наименование '.$itm->ProductName->__toString() . '<br>';
+    echo 'Количество '.$itm->Quantity->__toString() . '<br>';
+    echo 'Цена $'.$itm->USPrice->__toString() . '<br>';
+    echo 'Комментарии: '.$itm->Comment->__toString() . '<br>';
+    echo 'Дата доставки: '.$itm->ShipDate->__toString() . '<br>';
+}
 
 
 // Задание 2
