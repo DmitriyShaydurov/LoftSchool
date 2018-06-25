@@ -2,8 +2,8 @@
 require_once 'app/bootstrap.php';
 $a = new BaseTariff(30, 30, 1, false, false);
 $b = new HourTariff(40, 30, 1, false, false);
-$c = new DayTariff(40, 30, 1, true, false);
-$d = new StudentTariff(21, 30, 1, false, true);
+$c = new DayTariff(70, 30, 1, true, false);
+$d = new StudentTariff(40, 30, 1, false, true);
 
 
 echo $a->totalCalc().'<br>';

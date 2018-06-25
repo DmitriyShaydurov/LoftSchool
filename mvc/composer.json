@@ -1,0 +1,21 @@
+{
+    "name": "shaidurov/mvc",
+    "description": "mvc pattern integration",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Dmitriy Shaydurov",
+            "email": "dmitriy.shaydurov@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4":
+        {
+            "App\\": "app/"
+        }
+    },
+
+    "require": {}
+}
