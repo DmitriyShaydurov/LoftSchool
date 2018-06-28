@@ -15,7 +15,8 @@ public function printAll()
     //  не проходят почему?
 
     echo "<pre>"; // Понятно что это все во View надо выводить пока отладка
-    print_r($users->where('user_name', 'like', 'Дмитрий')->toArray());
+    //print_r($users->where('user_name', 'like', 'Дмитрий')->toArray());
+    print_r($users->toArray());
 }
 
 
