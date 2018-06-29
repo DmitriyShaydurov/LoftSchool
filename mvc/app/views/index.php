@@ -6,4 +6,4 @@
  * Time: 17:42
  */
 //echo $twig->render('1.html', array('name' => 'Fabien'));
-echo 'index';
+echo 'index twig';

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\libraries;
 /*
 * Base Controller
@@ -9,6 +10,7 @@ class Controller
 {
     protected $loader;
     protected $twig;
+
 // Load model
     public function model($model)
     {
@@ -19,15 +21,13 @@ class Controller
 // Load view
     public function view($view, $data = [])
     {
-
+        $viewFile = $view . '.twig';
 // Check for view file
-
-        if (file_exists('../app/views/' . $view . '.php')) {
-//            $this->loader = new Twig_Loader_Filesystem('../app/templates');
-//            $this->twig = new Twig_Environment($this->loader);
-            //echo $twig->render('1.html', array('name' => 'Fabien'));
-
-            require_once '../app/views/' . $view . '.php';
+        if (file_exists('../app/views/' . $viewFile)) {
+            $this->loader = new \Twig_Loader_Filesystem('../app/views');
+            $this->twig = new \Twig_Environment($this->loader);
+            //print_r($data);
+            echo $this->twig->render($viewFile, $data);
         } else {
 // View does not exist
             die('View does not exist');

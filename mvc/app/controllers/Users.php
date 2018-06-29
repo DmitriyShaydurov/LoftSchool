@@ -1,11 +1,13 @@
 <?php
 namespace App\controllers;
 
+
+
 class Users extends \App\libraries\Controller
 {
 public function printAll()
 {
-    $users = \App\models\User::All();// пишет что есть двойное обьявление метода не пойму почему
+    $users = \App\models\User::where('user_name', 'like', 'Дмитрий')->get();// find пишет что есть двойное обьявление метода не пойму почему
     // любые мои попытки сделать запрос вида
     //    ->where('name', 'like', 'Дмитрий')
     //    ->orWhere('name', 'like', 'A%')
@@ -16,7 +18,7 @@ public function printAll()
 
     echo "<pre>"; // Понятно что это все во View надо выводить пока отладка
     //print_r($users->where('user_name', 'like', 'Дмитрий')->toArray());
-    print_r($users->toArray());
+    print_r($users);
 }
 
 
