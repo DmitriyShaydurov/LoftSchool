@@ -6,5 +6,37 @@
 </head>
 <body>
 <h1>Hello</h1>
+
+<form action="/action_page.php">
+    First name:<br>
+    <input type="text" user_name="firstname" >
+    <br>
+    Age:<br>
+    <input type="text" age="age" >
+    <br><br>
+    Description:<br>
+    <input type="text" age="age" >
+    <br><br>
+    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+    <!-- Название элемента input определяет имя в массиве $_FILES -->
+    Отправить этот файл: <input name="userfile" type="file" />
+    <br>
+    <br><br>
+    <input type="submit" value="Submit">
+</form>
+
+
+<form enctype="multipart/form-data" action="__URL__" method="POST">
+    <!-- Поле MAX_FILE_SIZE должно быть указано до поля загрузки файла -->
+    <input type="hidden" name="MAX_FILE_SIZE" value="30000" />
+    <!-- Название элемента input определяет имя в массиве $_FILES -->
+    Отправить этот файл: <input name="userfile" type="file" />
+    <input type="submit" value="Send File" />
+</form>
+
+<p>If you click the "Submit" button, the form-data will be sent to a page called "/action_page.php".</p>
+
+</body>
+</html>
 </body>
 </html>

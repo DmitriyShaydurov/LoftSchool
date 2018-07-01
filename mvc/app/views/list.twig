@@ -1,0 +1,45 @@
+{% include "personal-header.twig" %}
+
+
+<div class="container">
+    <h1>Здравствуйте {{ name }}</h1>
+    <P>Возможна сортировка <a href="/users/listPage/?sort=ASC">возрастанию</a> и <a href="/users/listPage/?sort=DESC">убыванию возраста</a></P>
+    <table class="table table-bordered">
+        <tr>
+            <th>Email</th>
+            <th>Имя</th>
+            <th>возраст</th>
+            <th>описание</th>
+            <th>Фотография</th>
+            <th>Совершеннолетие</th>
+        </tr>
+        {% for user in users %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>{{ user.user_name }}</td>
+                <td>{{ user.age }}</td>
+                <td>{{ user.description }}</td>
+                <td><img src="http://placekitten.com/g/50/50" alt="{{ user.user_name }}"></td>
+                <td>
+                    {% if user.age > 18 %}
+                        Cовершеннолетний
+                    {% else %}
+                        Несоврешеннолетний
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+</div><!-- /.container -->
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+</body>
+</html>

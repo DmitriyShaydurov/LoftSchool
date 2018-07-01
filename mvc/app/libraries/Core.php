@@ -11,7 +11,7 @@ namespace App\libraries;
 
 class Core
 {
-    protected $currentController; // = "App\\controllers\\" .'Pages';
+    protected $currentController;
     protected $currentMethod = 'index';
     protected $params = [];
 

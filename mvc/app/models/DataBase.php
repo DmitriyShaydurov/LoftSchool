@@ -29,7 +29,6 @@ class DataBase
         // Setup the Eloquent ORM...
         $capsule->bootEloquent();
 
-
     }
 
 

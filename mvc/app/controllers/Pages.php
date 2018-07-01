@@ -14,11 +14,12 @@ class Pages extends \App\libraries\Controller
 
     public function index()
     {
-        $data = [
-            'title' => 'Simple MVC Pattern',
-            'description' => 'Model View Controller'
-        ];
-        $this->view('index', $data);
+//        $data = [
+//            'title' => 'Simple MVC Pattern',
+//            'description' => 'Model View Controller',
+//            'siteName' =>SITENAME
+//        ];
+        $this->view('index', $this->data);
 
     }
 
