@@ -19,18 +19,6 @@ class Core
 
         $this->readUrl();
 
-        if (class_exists($this->currentController) && method_exists($this->currentController, $this->currentMethod)) {
-            $this->currentController = new $this->currentController();
-        } else {
-            $this->currentController = "App\\controllers\\" . 'Pages';
-            $this->currentMethod = 'oopsPage';
-        }
-
-        $this->currentController = new $this->currentController();
-
-        // Call a callback with array of params
-        call_user_func_array([$this->currentController, $this->currentMethod],[]);
-
     }
 
     public function readUrl()
@@ -46,5 +34,21 @@ class Core
             $this->currentMethod = $classMethod[1];
         }
 
+    }
+
+    public function start()
+    {
+
+        if (class_exists($this->currentController) && method_exists($this->currentController, $this->currentMethod)) {
+            $this->currentController = new $this->currentController();
+        } else {
+            $this->currentController = "App\\controllers\\" . 'Pages';
+            $this->currentMethod = 'oopsPage';
+        }
+
+        $this->currentController = new $this->currentController();
+
+        // Call a callback with array of params
+        call_user_func_array([$this->currentController, $this->currentMethod], []);
     }
 }
