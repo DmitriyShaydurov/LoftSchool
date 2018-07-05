@@ -25,15 +25,17 @@ class Controller
     public function view($view)
     {
         $viewFile = $view . '.twig';
+        $this->loader = new \Twig_Loader_Filesystem('../app/views');
+        $this->twig = new \Twig_Environment($this->loader);
         // Check for view file
         if (file_exists('../app/views/' . $viewFile)) {
-            $this->loader = new \Twig_Loader_Filesystem('../app/views');
-            $this->twig = new \Twig_Environment($this->loader);
+//            $this->loader = new \Twig_Loader_Filesystem('../app/views');
+//            $this->twig = new \Twig_Environment($this->loader);
             //print_r($data);
             echo $this->twig->render($viewFile, $this->data);
         } else {
             // View does not exist
-            die('View does not exist');
+            echo $this->twig->render('oops.twig', $this->data);
         }
     }
 }

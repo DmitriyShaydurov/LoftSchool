@@ -19,7 +19,7 @@
                 <td>{{ user.user_name }}</td>
                 <td>{{ user.age }}</td>
                 <td>{{ user.description }}</td>
-                <td><img src="http://placekitten.com/g/50/50" alt="{{ user.user_name }}"></td>
+                <td><img src="/img/{{ user.url }}" alt="{{ user.user_name }}"></td>
                 <td>
                     {% if user.age > 18 %}
                         Cовершеннолетний

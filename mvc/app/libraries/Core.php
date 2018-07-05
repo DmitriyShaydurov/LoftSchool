@@ -13,7 +13,6 @@ class Core
 {
     protected $currentController;
     protected $currentMethod = 'index';
-    protected $params = [];
 
     public function __construct()
     {
@@ -30,7 +29,7 @@ class Core
         $this->currentController = new $this->currentController();
 
         // Call a callback with array of params
-        call_user_func_array([$this->currentController, $this->currentMethod], $this->params);
+        call_user_func_array([$this->currentController, $this->currentMethod],[]);
 
     }
 
@@ -47,9 +46,5 @@ class Core
             $this->currentMethod = $classMethod[1];
         }
 
-        array_shift($_GET);
-        if ($_GET) {
-            $this->params = $_GET;
-        }
     }
 }

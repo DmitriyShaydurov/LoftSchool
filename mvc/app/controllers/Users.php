@@ -16,7 +16,6 @@ class Users extends \App\libraries\Controller
         $this->users = User::All()->toArray();
     }
 
-
     public function register()
     {
         $this->data = ['message' => DEFAULT_LOG_MESSAGE];
@@ -60,19 +59,16 @@ class Users extends \App\libraries\Controller
                 } else {
                     // No User
                     //$this->data['message'] = 'Регистрируемся';
-
                     $user = new User;
-
                     $user->email = $this->data['email'];
                     $user->user_name = $this->data['email'];
                     $user->age = 1;
                     $user->description = ' ';
                     $user->url = 'default.png';
-                    $user->password = $this->data['password'];
+                    $user->password = password_hash($this->data['password'], PASSWORD_DEFAULT);
                     $user->save();
                     $this->data['message'] = 'Вы зарегестрированы';
                 }
-
 
             }
         }
@@ -109,17 +105,12 @@ class Users extends \App\libraries\Controller
                 if ($this->userFound($this->data['email'], $this->data['password'])) {
                     //$this->data['message'] = 'Этот email уже зарегестрирован';
                     $this->createUserSession();
-//                    echo '<pre>';
-//                    print_r( $this->data);
-//                    $comma_separated = implode(",", $_SESSION);
-//                    $this->data['message'] = $comma_separated;
 
                 } else {
                     // No User
                     $this->data['message'] = 'Неправильный пароль или email';
 
                 }
-
 
             }
         }
@@ -131,7 +122,7 @@ class Users extends \App\libraries\Controller
 
         foreach ($this->users as $user) {
 
-            if (trim($user['email']) === $email && trim($user['password'] === $password)) {
+            if (trim($user['email']) === $email && password_verify($password, $user['password'])) {
                 $this->currentUser = $user;
                 return true;
             }
@@ -140,16 +131,15 @@ class Users extends \App\libraries\Controller
         return false;
     }
 
-
     public function listPage()
     {
         if (!isset($_SESSION['user_id'])) {
             redirect('users/login');
         }
         if (!isset($_GET['sort'])) {
-            $order='DESC';
-        }else{
-            $order=$_GET['sort'];
+            $order = 'DESC';
+        } else {
+            $order = $_GET['sort'];
         }
 
         $user = User::find($_SESSION['user_id'])->toArray();
@@ -166,7 +156,6 @@ class Users extends \App\libraries\Controller
 
         $this->view('list');
 
-
     }
 
     public function fileListPage()
@@ -180,6 +169,9 @@ class Users extends \App\libraries\Controller
         $this->data['age'] = $user['age'];
         $this->data['description'] = $user['description'];
 
+        $users = User::All()->toArray();
+
+        $this->data['users'] = $users;
 
         $this->view('filelist');
     }
@@ -205,12 +197,73 @@ class Users extends \App\libraries\Controller
         $this->data['age'] = $user['age'];
         $this->data['description'] = $user['description'];
 
-//
-//
-//        $this->data['name'] = $_SESSION['user_name'];
-
         $this->view('admin');
     }
+
+    public function avatarPage()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            redirect('users/login');
+        }
+        $this->data['msg']='';
+
+            $usr = User::find($_SESSION['user_id']);
+            $target_dir = "img/";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+
+            $uploadOk = 1;
+
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+            $target_file = $target_dir . ($_SESSION['user_id']) .'.'. $imageFileType;
+
+            // Check if  file is a actual image or fake image
+            if (isset($_POST["submit"]) &&  !empty($_FILES["fileToUpload"]["tmp_name"])) {
+                $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+                if ($check !== false) {
+                    $uploadOk = 1;
+                } else {
+                    $this->data['msg'] = $this->data['msg'] . 'Файл не является картинкой';
+                    $uploadOk = 0;
+                }
+
+                // Check if file already exists
+//                if (file_exists($target_file)) {
+//                    $this->data['msg'] = $this->data['msg'] . "Извините файл уже существует ";
+//                    $uploadOk = 0;
+
+                // Check file size
+                if ($_FILES["fileToUpload"]["size"] > 500000) {
+                    $this->data['msg'] = $this->data['msg'] . "Файл слишком велик";
+                    $uploadOk = 0;
+                }
+                // Allow certain file formats
+                if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                    && $imageFileType != "gif") {
+                    $this->data['msg'] = $this->data['msg'] . "Извините, вы можете загрузить только JPG, JPEG, PNG & GIF. ";
+                    $uploadOk = 0;
+                }
+                // Check if $uploadOk is set to 0 by an error
+                if ($uploadOk == 0) {
+                    $this->data['msg'] = $this->data['msg'] . " Ваш файл не загружен.";
+                    // if everything is ok, try to upload file
+                } else {
+                    //$this->data['msg']=$this->data['msg'].' tmp_name '.$_FILES["fileToUpload"]["tmp_name"];
+                    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                        $this->data['msg'] = $this->data['msg'] . "Файл загружен";
+                        $user = User::find($_SESSION['user_id']);
+                        $user->url = ($_SESSION['user_id']) .'.'. $imageFileType;;
+                        $user->save();
+                    } else {
+                        $this->data['msg'] = $this->data['msg'] . "Во вермя загрузки файла произошла ошибка";
+                    }
+                }
+            }
+
+        $this->view('avatar');
+
+    }
+
 
     // Create Session With User Info
     public function createUserSession()
