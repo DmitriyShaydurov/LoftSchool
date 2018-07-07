@@ -1,4 +1,26 @@
 <?php
+require_once 'vendor/autoload.php';
+
+function sendMail($email, $message, $subject)
+{
+// Create the Transport
+    $transport = (new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl'))
+        ->setUsername('PHGBTU.FOUNDATION@gmail.com')
+        ->setPassword('phuket@2018');
+
+// Create the Mailer using your created Transport
+    $mailer = new Swift_Mailer($transport);
+
+// Create a message
+    $message = (new Swift_Message($subject))
+        ->setFrom(['john@doe.com' => 'Burger maker'])
+        ->setTo([$email])
+        ->setBody($message);
+
+// Send the message
+    $result = $mailer->send($message);
+}
+
 function orders($pdo, $id)
 {
     $sql = 'INSERT INTO orders (personID) VALUES(:id)';
@@ -7,7 +29,7 @@ function orders($pdo, $id)
     $lastOrderId = $pdo->lastInsertId();
 
 
-    $sql = 'SELECT customer.street, customer.hose_num, customer.floor
+    $sql = 'SELECT customer.street, customer.hose_num, customer.floor, customer.email
             FROM customer 
             INNER JOIN orders ON customer.id = orders.PersonID AND customer.id = :id
             ORDER BY orders.personID';
@@ -21,16 +43,16 @@ function orders($pdo, $id)
     } else {
         $lastMsg = "Это ваш первый заказ";
     }
-
-
-    $message = "Заказ № $lastOrderId" . PHP_EOL .
+    $subject = "Заказ № $lastOrderId";
+    $message = $subject . PHP_EOL .
         'Ваш заказ будет доставлен по адресу' . PHP_EOL .
         "Улица " . $customer[0]['street'] . ' Дом ' . $customer[0]['hose_num'] . ' Этаж ' . $customer[0]['floor'] . PHP_EOL .
         'Cодержание заказа: DarkBeefBurger за 500 рублей, 1 шт' . PHP_EOL .
         $lastMsg;
 
-    echo 'Спасибо за заказ';
+    echo 'Спасибо за заказ ';
 
-    $file = date("d-m-Y H-i-s") . '.txt';
+    $file = 'messages/' . date("d-m-Y H-i-s") . '.txt';
     file_put_contents($file, $message);
+    sendMail($customer[0]['email'], $message, $subject);
 }
